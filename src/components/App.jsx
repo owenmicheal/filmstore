@@ -1,12 +1,23 @@
 import React from 'react';
-import { CssBaseline } from '@mui/material';
+import { CssBaseline } from '@mui/material'; // Import CssBaseline
+import { Routes, Route } from 'react-router-dom'; // No need to import BrowserRouter here
+
+import { Actors, MovieInfo, Movies, Navbar, Profile } from './';
 
 const App = () => {
   return (
-    <div>
-      <CssBaseline />  {/* Global CSS reset and baseline */}
-      <h1>Hello Film Store</h1>
-    </div>
+    <>
+      <CssBaseline />
+      <Navbar />  {/* Render Navbar globally */}
+      <main>
+        <Routes>
+          <Route path="/" element={<Movies />} /> 
+          <Route path="/movies/:id" element={<MovieInfo />} />  
+          <Route path="/actors/:id" element={<Actors />} />  
+          <Route path="/profile/:id" element={<Profile />} />  
+        </Routes>
+      </main>
+    </>
   );
 };
 
