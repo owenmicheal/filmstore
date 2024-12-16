@@ -22,7 +22,7 @@ const redLogo = 'https://fontmeme.com/permalink/210930/8531c658a743debe1e1aa1a2f
 
 const blueLogo = 'https://fontmeme.com/permalink/210930/6854ae5c7f76597cf8680e48a2c8a50a.png';
 
-const sideBar = ({ setMobileOpen }) => {
+const SideBar = ({ setMobileOpen }) => {
     const theme = useTheme();
     const classes = useStyles();
 
@@ -55,7 +55,7 @@ const sideBar = ({ setMobileOpen }) => {
         <ListSubheader>Genres</ListSubheader>
         { demoCategories.map(({label, value}) => (
             <Link key={value} className={ classes.links } to='/' >
-                <ListItem onClick = {() => {}} button >
+                <ListItem onClick = {() => {}} button={true} >
                     {/* <ListItemIcon>
                         <img src={redLogo} className={ classes.genreImages } height={30} />
                     </ListItemIcon> */}
@@ -68,4 +68,4 @@ const sideBar = ({ setMobileOpen }) => {
   )
 }
 
-export default sideBar
+export default SideBar
