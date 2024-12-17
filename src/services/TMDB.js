@@ -12,7 +12,7 @@ export const tmdbApi = createApi({
     endpoints: (builder) => ({
         // fetching genres
         getGenres: builder.query({
-            query: () => `genre/movie/list?api_key=${tmdbApi}`
+            query: () => `genre/movie/list?api_key=${tmdbApiKey}`
         }),
         // Fetch the latest movie
         getMovies: builder.query({
