@@ -1,16 +1,17 @@
-import { styled } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 
-// Styled components
-export const Root = styled('div')({
-  display: 'flex',
-  flexDirection: 'column',
-  height: '100vh',
-  backgroundColor: '#f5f5f5',
-});
+export default makeStyles(() => ({
+  root: {
+    display: 'flex',
+    height: '100%',
+  },
 
-export const Main = styled('main')({
-  flex: 1,
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-});
+  toolbar: {
+    height: '70px'
+  },
+
+  content: {
+    flexGrow: '1',
+    padding: '2em',
+  },
+}));
