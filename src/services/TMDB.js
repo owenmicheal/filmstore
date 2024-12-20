@@ -4,8 +4,6 @@ const tmdbApiKey = import.meta.env.VITE_TMDB_KEY;
 
 
 
-const page = 1;
-
 export const tmdbApi = createApi({
     reducerPath: 'tmdbApi',
     baseQuery: fetchBaseQuery({ baseUrl: 'https://api.themoviedb.org/3' }),
@@ -16,9 +14,24 @@ export const tmdbApi = createApi({
         }),
         // Fetch the latest movie
         getMovies: builder.query({
-            query: () => `movie/popular?page=${page}&api_key=${tmdbApiKey}`
-        })
-    })
+            query: ({ genreIdOrCategoryName, page, searchQuery }) => {
+                // get movies by search
+                if( searchQuery ) {
+                    return `/search/movie?query=${searchQuery}&page=${page}&api_key=${tmdbApiKey}`
+                }
+                // popular, top_rated, upcoming => string {get moivies by category}
+                if(genreIdOrCategoryName && typeof genreIdOrCategoryName === 'string') {
+                    return `movie/${genreIdOrCategoryName}?page=${page}&api_key=${tmdbApiKey}`
+                }
+                // 12, 34, 54, 6553 => number {get movies by genre}
+                if(genreIdOrCategoryName && typeof genreIdOrCategoryName === 'number') {
+                    return `discover/movie?with_genres=${genreIdOrCategoryName}&page=${page}&api_key=${tmdbApiKey}`
+                }
+                // {geting popular movies}
+                return `movie/popular?page=${page}&api_key=${tmdbApiKey}`
+            },
+        }),
+    }),
 });
 
 export const { 
