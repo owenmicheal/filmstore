@@ -18,20 +18,22 @@ export default makeStyles((theme) => ({
     poster: {
         borderRadius: '25px',
         boxShadow: '0.5em 1em 1em rgb(64, 64, 70)',
-        width: '80%',
-        [theme.breakpoints.down('sm')]: {
-            margin: '0 auto',
-            width: '100%',
-            height: '350px',
-            marginBottom: '30px'
-        },
+        width: '100%',
+        marginBottom:'40px',
         [theme.breakpoints.down('md')]: {
             margin: '0 auto',
             width: '100%',
             height: '350px',
+            marginBottom: '30px',
+        },
+        [theme.breakpoints.down('sm')]: {
+            margin: '0 auto',
+            width: '100%',
+            height: '350px',  // Adjusted height for smaller screens
             marginBottom: '30px'
         },
     },
+    
 
     genresContainer:{
         margin: '10px 0 !important',
@@ -49,11 +51,35 @@ export default makeStyles((theme) => ({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
+        textDecoration: 'none',
         [theme.breakpoints.down('sm')]: {
             padding: '0.5rem 1rem '
         },
 
+    },
+
+    castImage: {
+        width: '100%',
+        maxWidth: '7em',
+        height: '8em',
+        objectFit: 'cover',
+        borderRadius: '25px'
+    },
+
+    castName: {
+        fontSize: '0.9rem',
+        marginTop: '5px',
+        color: theme.palette.text.primary,
+      },
+
+    buttonContainer: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        width: '100%',
+        [theme.breakpoints.down('sm')]: {
+            flexDirection: 'column',
+        }
     }
-    
+      
     
 }));

@@ -18,6 +18,17 @@ const MovieInfo = () => {
   const { data, isFetching, error } = useGetMovieQuery(id);
   const classes = useStyles();
 
+  const isMovieFavorited = false;
+  const isMovieWatchlisted = false;
+
+  const addToFavorites = () => {
+
+  };
+
+  const addToWatchlist = () => {
+
+  };
+
   if(isFetching) {
     return (
       <Box display='flex' justifyContent='center' alignItems='center' >
@@ -43,11 +54,11 @@ const MovieInfo = () => {
           alt={data?.title}
         />
       </Grid2>
-      <Grid2 item container direction='column' lg={7}>
-        <Typography variant='h3' align='center' gutterBottom>
+      <Grid2 item container direction='column' lg={7} className={classes.content}>
+        <Typography variant='h4' align='center' gutterBottom>
           {data?.title} ({data.release_date.split('-')[0]})
         </Typography>
-        <Typography variant='h3' align='center' gutterBottom>
+        <Typography variant='h6' align='center' gutterBottom>
           {data?.tagline}
         </Typography>
         <Grid2 item className={classes.containerSpaceAround}>
@@ -70,6 +81,55 @@ const MovieInfo = () => {
               </Typography>
             </Link>
           ))}
+        </Grid2>
+        <Typography variant='h5' gutterBottom style={{marginTop: '10px'}}>
+          overview
+        </Typography>
+        <Typography style={{marginBottom: '2rem'}}>
+          {data?.overview}
+        </Typography>
+        <Typography variant='h5' gutterBottom>
+          Top Cast
+        </Typography>
+        <Grid2 item container spacing={2}>
+          {data && data?.credits?.cast.map((character, i) => (
+            character.profile_path && (<Grid2 key={i} item xs={4} md={2} component={Link} to={`/actors/${character.id}`} style={{textDecoration: 'none'}}>
+              <img className={classes.castImage} src={`https://image.tmdb.org/t/p/w500/${character.profile_path}`} alt={character.name}/>
+              <Typography className={classes.castName}>
+                {character?.name.split(' ')[0]} {/* First Name */}
+              </Typography>
+              <Typography className={classes.castName}>
+                {character?.name.split(' ')[1] || ''} {/* Last Name (if exists) */}
+              </Typography>
+              <Typography color='textSecondary'>
+                {character.character.split(' ')[0]}
+              </Typography>
+            </Grid2>)
+          )).slice(0, 6)}
+        </Grid2>
+        <Grid2 item container style={{marginTop: '2rem' }}>
+          <div className={classes.buttonContainer}>
+            <Grid2 item xs={12} sm={6} className={classes.buttonContainer}>
+              <ButtonGroup size='small' variant='outlined'>
+                <Button target='blank' rel='noopener noreferrer' href={data?.homepage} endIcon={<Language />}>Website</Button>
+                <Button target='blank' rel='noopener noreferrer' href={`https://www.imdb.com/title/${data?.imdb_id}`} endIcon={<MovieIcon />}>IMDB</Button>
+                <Button onClick={() => {}} href='#' endIcon={<Theaters />}>Trailer</Button>
+              </ButtonGroup>
+            </Grid2>
+            <Grid2 item xs={12} sm={6} className={classes.buttonContainer}>
+              <ButtonGroup size='small' variant='outlined'>
+                <Button onClick={addToFavorites} endIcon={isMovieFavorited ? <FavoriteBorderOutlined /> : <Favorite />}>
+                  {isMovieFavorited ? 'Unfavourite' : 'Favorite'}
+                </Button>
+                <Button onClick={addToWatchlist} endIcon={isMovieWatchlisted ? <Remove /> : <PlusOne /> }>
+                  {isMovieWatchlisted ? 'Remove Frome WatchList' : 'WatchList'}
+                </Button>
+                <Button endIcon={<ArrowBack />} sx={{ borderColor: 'primary.main' }}>
+                <Typography style={{textDecoration: 'none'}} component={Link} to='/' color='primary' >Back</Typography>
+                </Button>
+              </ButtonGroup>
+            </Grid2>
+          </div>
         </Grid2>
       </Grid2>
     </Grid2>
