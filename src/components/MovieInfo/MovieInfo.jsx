@@ -7,9 +7,10 @@ import axios from 'axios';
 
 import { selectGenreOrCategory } from '../../features/currentDenreOrCategory';
 
-import { useGetMovieQuery } from '../../services/TMDB';
+import { useGetMovieQuery, useGetRecommendationsQuery } from '../../services/TMDB';
 import useStyles from './styles';
 import genreIcons from '../../assets/genres';
+import { MovieList } from '..';
 
 const MovieInfo = () => {
   const { id } = useParams();
@@ -17,6 +18,7 @@ const MovieInfo = () => {
 
   const { data, isFetching, error } = useGetMovieQuery(id);
   const classes = useStyles();
+  const { data: recommendations, isFetching: isRecommendations } = useGetRecommendationsQuery({ list: 'recommendations', movie_id: id});
 
   const isMovieFavorited = false;
   const isMovieWatchlisted = false;
@@ -54,7 +56,7 @@ const MovieInfo = () => {
           alt={data?.title}
         />
       </Grid2>
-      <Grid2 item container direction='column' lg={7} className={classes.content}>
+      <Grid2 item container direction='column' lg={7}>
         <Typography variant='h4' align='center' gutterBottom>
           {data?.title} ({data.release_date.split('-')[0]})
         </Typography>
@@ -132,6 +134,11 @@ const MovieInfo = () => {
           </div>
         </Grid2>
       </Grid2>
+      <Box marginTop='5rem' width='100%'>
+        <Typography variant='h3' gutterBottom align='center'>You Might Also Like</Typography>
+        {/* loop through the recomended movies */}
+          {recommendations ? <MovieList movies={recommendations} numberOfMovies={12}/> : <Typography variant='h6'>Tetulina Recomendations zeeno movie</Typography>}
+      </Box>
     </Grid2>
   )
 }
