@@ -1,6 +1,6 @@
 import { Height } from '@mui/icons-material';
 import { makeStyles } from '@mui/styles';
-import { height, margin, padding } from '@mui/system';
+import { height, margin, padding, width } from '@mui/system';
 
 export default makeStyles((theme) => ({
     containerSpaceAround: {
@@ -78,6 +78,23 @@ export default makeStyles((theme) => ({
         width: '100%',
         [theme.breakpoints.down('sm')]: {
             flexDirection: 'column',
+        }
+    }, 
+
+    modal: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+
+    video: {
+        width: '50%',
+        height: '50%',
+        borderRadius: '20px',
+        [theme.breakpoints.down('sm')]: {
+            width: '90%',
+            height: '90%',
+            borderRadius: '20px',
         }
     }
       
