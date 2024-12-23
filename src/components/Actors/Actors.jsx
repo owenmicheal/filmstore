@@ -61,16 +61,16 @@ const Actors = () => {
             <Button variant='contained' color='primary' target='blank' href={`https://www.imdb.com/name/${data?.imdb_id}`}>IMDB</Button>
             <Button startIcon={<ArrowBack />} onClick={() => navigate(-1)}>Back</Button>
           </Box>
-          <Box marginTop='5rem' width='100%'>
-        <Typography variant='h3' gutterBottom align='center'>Movies Featured In</Typography>
-        {/* loop through the recomended movies */}
-          {movies ? <MovieList movies={movies} numberOfMovies={12}/> : <Typography variant='h6'>Error fetching movies</Typography>}
-      </Box>
         </Grid2>
+        <Box marginTop='2rem 0'>
+            <Typography variant='h3' gutterBottom align='center'>Movies Featured In</Typography>
+            {/* loop through the recomended movies */}
+            {movies ? <MovieList movies={movies} numberOfMovies={12}/> : <Typography variant='h6'>Error fetching movies</Typography>}
+          </Box>
       </Grid2>
     </>
   )
   
 }
 
-export default Actors
+export default Actors;

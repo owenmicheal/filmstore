@@ -45,8 +45,8 @@ export const tmdbApi = createApi({
         }),
         // get movies an actor stared in
         getMoviesByActorId: builder.query({
-            guery: ({id, page}) => `/discover/moivie?with_cast=${id}&page=${page}&api_key=${tmdbApiKey}`
-        })
+            query: ({ id, page }) => `/discover/movie?api_key=${tmdbApiKey}&with_cast=${id}&page=${page}&sort_by=popularity.desc`,
+          }),
     }),
 });
 
