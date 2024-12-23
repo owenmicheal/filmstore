@@ -33,7 +33,17 @@ const Movies = () => {
       );
     }
 
-    if(error) return 'Waliwo Ekikyamu!';
+    if(error) {
+      return (
+        <Box display='flex' alignItems='center' justifyContent='center'>
+          <Typography variant='h4'>
+            Tewali Movie eyo joyagala.
+            <br />
+            Please search for somthing else.
+            </Typography>      
+        </Box>
+      );
+    }
 
 
   return (
