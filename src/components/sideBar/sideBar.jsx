@@ -16,9 +16,8 @@ const categories = [
     { label: 'Upcoming', value: 'upcoming' }
 ];
 
-const redLogo = 'https://fontmeme.com/permalink/210930/8531c658a743debe1e1aa1a2fc82006e.png';
-
-const blueLogo = 'https://fontmeme.com/permalink/210930/6854ae5c7f76597cf8680e48a2c8a50a.png';
+import redLogo from '../../assets/images/red.png';
+import blueLogo from '../../assets/images/blue.png';
 
 const SideBar = ({ setMobileOpen }) => {
     const { genreIdOrCategoryName } = useSelector((state) => state.currentGenreOrCategory);
@@ -27,13 +26,17 @@ const SideBar = ({ setMobileOpen }) => {
     const { data, isFetching } = useGetGenresQuery();
     const dispatch = useDispatch();
 
+    useEffect(() => {
+        setMobileOpen(false)
+    }, [genreIdOrCategoryName]);
+
 
   return (
     <>
     <Link to='/' className={ classes.imageLink }>
         <img 
             className={ classes.image }
-            src={ theme.palette.mode === 'light' ? redLogo : blueLogo }
+            src={ theme.palette.mode === 'light' ? blueLogo : redLogo }
             alt='Film Store Logo'
         />
     </Link>

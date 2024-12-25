@@ -1,10 +1,10 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState } from 'react';
 import { Box, CircularProgress, useMediaQuery, Typography } from '@mui/material';
 import { useSelector } from 'react-redux';
 
 import { selectGenreOrCategory } from '../../features/currentDenreOrCategory';
 import { useGetMoviesQuery } from '../../services/TMDB';
-import { MovieList, Pagination } from '..';
+import { MovieList, Pagination, FeaturedMovie } from '..';
 
 
 
@@ -18,7 +18,7 @@ const Movies = () => {
     const isXl = useMediaQuery((theme) => theme.breakpoints.only('xl'));
 
   // Determine number of movies based on screen size
-    const numberOfMovies = isXl ? 24 : isLg ? 20 : 16;
+    const numberOfMovies = isXl ? 16 : isLg ? 16 : 17;
 
     if(isFetching) {
       return (
@@ -45,7 +45,8 @@ const Movies = () => {
 
   return (
     <div>
-      <MovieList movies={data} numberOfMovies={numberOfMovies} />
+      <FeaturedMovie movie={data.results[0]} />
+      <MovieList movies={data} numberOfMovies={numberOfMovies} excludeFirst />
       <Pagination currentPage={page} setPage={setPage} totalPages={data.total_pages} />
     </div>
   )
