@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Typography, Button, Box, CircularProgress, Grid2, ButtonGroup, useMediaQuery, Rating, Modal } from '@mui/material';
 import { Movie as MovieIcon, Language, FavoriteBorderOutlined, ArrowBack, Theaters, PlusOne, Favorite, Remove } from '@mui/icons-material';
 import { Link, useParams } from 'react-router-dom';
@@ -7,30 +7,54 @@ import axios from 'axios';
 
 import { selectGenreOrCategory } from '../../features/currentDenreOrCategory';
 
-import { useGetMovieQuery, useGetRecommendationsQuery } from '../../services/TMDB';
+import { useGetMovieQuery, useGetRecommendationsQuery, useGetListQuery } from '../../services/TMDB';
 import useStyles from './styles';
 import genreIcons from '../../assets/genres';
 import { MovieList } from '..';
+import { userSelector } from '../../features/auth';
 
 const MovieInfo = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
+  const { user } = useSelector(userSelector);
 
-  const { data, isFetching, error } = useGetMovieQuery(id);
   const classes = useStyles();
   const [ open, setOpen ] = useState(false);
-
+  
+  const { data, isFetching, error } = useGetMovieQuery(id);
+  const { data: favoriteMovies } = useGetListQuery({ listName: 'favorite/movies', accountId: user.id, sessionId: localStorage.getItem('session_id'), page: 1 });
+  const { data: watchlistMovies } = useGetListQuery({ listName: 'watchlist/movies', accountId: user.id, sessionId: localStorage.getItem('session_id'), page: 1 });
   const { data: recommendations, isFetching: isRecommendations } = useGetRecommendationsQuery({ list: 'recommendations', movie_id: id});
 
-  const isMovieFavorited = false;
-  const isMovieWatchlisted = false;
+  const [ isMovieFavorited, setisMovieFavorited ] = useState(false);
+  const [ isMovieWatchlisted, setisMovieWatchlisted ] = useState(false);
+  
+  useEffect(() => {
+    setisMovieFavorited(!!favoriteMovies?.results?.find((movie) => movie?.id === data?.id));
+  }, [favoriteMovies, data]);
 
-  const addToFavorites = () => {
+  useEffect(() => {
+    setisMovieWatchlisted(!!watchlistMovies?.results?.find((movie) => movie?.id === data?.id));
+  }, [watchlistMovies, data]);
 
+  const addToFavorites = async () => {
+    await axios.post(`https://api.themoviedb.org/3/account/${user.id}/favorite?api_key=${import.meta.env.VITE_TMDB_KEY}&session_id=${localStorage.getItem('session_id')}`, {
+      media_type: 'movie',
+      media_id: id,
+      favorite: !isMovieFavorited,
+    });
+
+    setisMovieFavorited((prev) => !prev);
   };
 
-  const addToWatchlist = () => {
+  const addToWatchlist = async () => {
+    await axios.post(`https://api.themoviedb.org/3/account/${user.id}/watchlist?api_key=${import.meta.env.VITE_TMDB_KEY}&session_id=${localStorage.getItem('session_id')}`, {
+      media_type: 'movie',
+      media_id: id,
+      watchlist: !isMovieWatchlisted,
+    });
 
+    setisMovieWatchlisted((prev) => !prev);
   };
 
   if(isFetching) {
@@ -73,7 +97,7 @@ const MovieInfo = () => {
             </Typography>
           </Box>
           <Typography variant='h6' align='center' gutterBottom>
-            {data?.runtime}min { data?.spoken_languages.length > 0 ? `/ ${data?.spoken_languages[0].name}` : '' }
+            {data?.runtime}min | Language: {data?.spoken_languages[0].name}
           </Typography>
         </Grid2>
         <Grid2 item className={classes.genresContainer}>
@@ -126,7 +150,7 @@ const MovieInfo = () => {
                   {isMovieFavorited ? 'Unfavourite' : 'Favorite'}
                 </Button>
                 <Button onClick={addToWatchlist} endIcon={isMovieWatchlisted ? <Remove /> : <PlusOne /> }>
-                  {isMovieWatchlisted ? 'Remove Frome WatchList' : 'WatchList'}
+                  {isMovieWatchlisted ? 'WatchList' : 'WatchList'}
                 </Button>
                 <Button endIcon={<ArrowBack />} sx={{ borderColor: 'primary.main' }}>
                 <Typography style={{textDecoration: 'none'}} component={Link} to='/' color='primary' >Back</Typography>
@@ -139,7 +163,7 @@ const MovieInfo = () => {
       <Box marginTop='5rem' width='100%'>
         <Typography variant='h3' gutterBottom align='center'>You Might Also Like</Typography>
         {/* loop through the recomended movies */}
-          {recommendations ? <MovieList movies={recommendations} numberOfMovies={12}/> : <Typography variant='h6'>Tetulina Recomendations zeeno movie</Typography>}
+          {recommendations ? <MovieList movies={recommendations} numberOfMovies={15}/> : <Typography variant='h6'>Tetulina Recomendations zeeno movie</Typography>}
       </Box>
         <Modal 
           closeAfterTransition

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { TextField, InputAdornment, IconButton } from '@mui/material';
 import { Search as SearchIcon } from '@mui/icons-material';
 import { useDispatch } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 
 import useStyles from './styles';
 import { searchMovie } from '../../features/currentDenreOrCategory';
@@ -10,6 +11,7 @@ const Search = () => {
     const classes = useStyles();
     const [query, setQuery] = useState('');
     const dispatch = useDispatch();
+    const location = useLocation()
 
     const handleSearch = () => {
         if (query.trim()) {
@@ -23,6 +25,8 @@ const Search = () => {
             handleSearch();
         }
     };
+
+    if(location.pathname !== '/') return null;
 
     return (
         <div className={classes.searchContainer}>
